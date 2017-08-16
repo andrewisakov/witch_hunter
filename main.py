@@ -10,6 +10,17 @@ def get_query(query='query_1.sql', path='sql'):
         return ''.join(qf.readlines())
 
 
+db = fdb.connect(**settings.DB)
+
+SELECT = get_query('drivers.sql')
+c = db.cursor()
+c.execute(SELECT)
+drivers = {}
+for r in c.fetchall():
+    term_acc, crew_id, _ = r
+    drivers[term_acc] = crew_id
+c.close()
+
 SELECT = get_query()
 ARGS = (datetime.datetime(2017, 8, 1, 6, 0), datetime.datetime(2017, 9, 1, 8))
 # print(SELECT % ARGS)
@@ -17,8 +28,36 @@ ARGS = (datetime.datetime(2017, 8, 1, 6, 0), datetime.datetime(2017, 9, 1, 8))
 #                  host='127.0.0.1',
 #                  user='sysdba',
 #                  password='admin', charset='win1251')
-db = fdb.connect(**settings.DB)
 c = db.cursor()
 c.execute(SELECT % ARGS)
-c.fetchall()
+float_0 = float(0)
+data = {}
+date_zero = datetime.datetime(1, 1, 1, 0, 0, 0)
+date_inf = datetime.datetime(9999, 12, 31, 23, 59, 59)
+# print(date_zero)
+for r in c.fetchall():
+    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r
+    crew_id = int(crew_id)
+    shift_id = int(shift_id)
+    disc_summ = float(disc_summ) if disc_summ else float_0
+    if crew_id not in data:
+        data[crew_id] = [shift_time_begin, shift_time_end, datetime.timedelta(0), 0, 0, 0]
+    # print(crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ)
+    data[crew_id][0] = min([data[crew_id][0], (shift_time_begin if shift_time_begin else date_inf)])
+    data[crew_id][1] = max([data[crew_id][1], (shift_time_end if shift_time_end else date_zero)])
+    data[crew_id][2] += (shift_time_end - shift_time_begin)
+    data[crew_id][3] += 1
+    data[crew_id][4] += (1 if disc_summ else 0)
+    data[crew_id][5] += disc_summ
+c.close()
 db.close()
+
+with open('witch.csv', 'w') as rpt:
+    for d in sorted(drivers):
+        line_ = d
+        if drivers[d] in data.keys():
+            data[drivers[d]] = ['%s' % dr for dr in data[drivers[d]]]
+            line_ += (';'+';'.join(data[drivers[d]]))
+            line_ = line_.replace('.', ',')
+        line_ += '\n'
+        rpt.writelines([line_,])
