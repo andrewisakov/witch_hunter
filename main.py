@@ -53,7 +53,7 @@ c.close()
 db.close()
 
 with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as rpt:
-    rpt.writelines(['Позывной;Начало периода;Конец периода;Перемещения\n', ';;;Всего;Заказы;Сумма\n'])
+    rpt.writelines([';;;;Перемещения\n', 'Позывной;Начало периода;Конец периода;Всего времени;Всего;Заказы;Сумма\n'])
     for d in sorted(drivers):
         line_ = d
         if drivers[d] in data.keys():
