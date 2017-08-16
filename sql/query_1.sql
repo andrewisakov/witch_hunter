@@ -1,4 +1,4 @@
-select ch.crewid, dsf.id as shift_id, dsf.begin_time, dsf.end_time, o.discountedsumm
+select ch.crewid, dsf.id as shift_id, dsf.begin_time, dsf.end_time, sum(o.discountedsumm) as disc_sum
 from crews_h ch
 left join orders o on ((o.crewid=ch.crewid) and
 ch.statetime between o.starttime and o.finishtime)
