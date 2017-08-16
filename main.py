@@ -61,7 +61,7 @@ with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as r
             minutes = (data[drivers[d]][2].seconds % 3600) // 60
             seconds = data[drivers[d]][2].seconds % 60
             data[drivers[d]][2] = '%s:%02d:%02d' % (hours, minutes, seconds)
-            # data[drivers[d]][2].days*24 + data[drivers[d]][2].seconds // 3600, data[drivers[d]][2].seconds % 3600, 
+
             data[drivers[d]] = ['%s' % dr for dr in data[drivers[d]]]
             line_ += (';'+';'.join(data[drivers[d]]))
             line_ = line_.replace('.', ',')
