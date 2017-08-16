@@ -52,12 +52,18 @@ for r in c.fetchall():
 c.close()
 db.close()
 
-with open('witch.csv', 'w') as rpt:
+with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as rpt:
+    rpt.writelines(['Позывной;Начало периода;Конец периода;Перемещения', ';;;Всего;Заказы;Сумма'])
     for d in sorted(drivers):
         line_ = d
         if drivers[d] in data.keys():
+            hours = data[drivers[d]][2].days*24 + data[drivers[d]][2].seconds // 3600
+            minutes = (data[drivers[d]][2].seconds % 3600) // 60
+            seconds = data[drivers[d]][2].seconds % 60
+            data[drivers[d]][2] = '%s:%s:%s' % (hours, minutes, seconds)
+            # data[drivers[d]][2].days*24 + data[drivers[d]][2].seconds // 3600, data[drivers[d]][2].seconds % 3600, 
             data[drivers[d]] = ['%s' % dr for dr in data[drivers[d]]]
             line_ += (';'+';'.join(data[drivers[d]]))
             line_ = line_.replace('.', ',')
         line_ += '\n'
-        rpt.writelines([line_,])
+        rpt.writelines([line_, ])
