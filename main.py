@@ -19,7 +19,7 @@ drivers = {term_acc: crew_id for term_acc, crew_id, _ in c.fetchall()}
 c.close()
 
 SELECT = get_query('select_orders.sql')
-ARGS = (datetime.datetime(2017, 9, 1, 6), datetime.datetime(2017, 10, 1, 8))
+ARGS = settings.DATES
 c = db.cursor()
 c.execute(SELECT, ARGS)
 float_0 = float(0)
