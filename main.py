@@ -108,10 +108,10 @@ with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as r
             last_date = ARGS[0].date()
             for d in data[drivers[dr]]:
                 if (d - last_date).days > 1:
-                    line_ += (';'*7)*((d - last_date).days-1)
+                    line_ += (';'*(ARGS[1]-ARGS[0]).days)*((d - last_date).days-1)
                     last_date = d
 
-                print(data[drivers[dr]][d])
+                # print(data[drivers[dr]][d])
                 hours = data[drivers[dr]][d][0].days*24 + data[drivers[dr]][d][0].seconds // 3600
                 minutes = (data[drivers[dr]][d][0].seconds % 3600) // 60
                 seconds = data[drivers[dr]][d][0].seconds % 60
