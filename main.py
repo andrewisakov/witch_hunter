@@ -118,7 +118,7 @@ with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as r
             totals = ['%s' % t for t in totals]
             line_ += ';' + ';'.join(totals)
             last_date = ARGS[0].date()
-            for d in data[drivers[dr]]:
+            for d in sorted(data[drivers[dr]]):
                 if (d - last_date).days > 1:
                     line_ += (';'*((d - last_date).days-1)*8)
                     last_date = d
