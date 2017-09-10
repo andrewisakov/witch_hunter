@@ -5,34 +5,31 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	//
-ARGS	../main.py	/^ARGS = (datetime.datetime(2017, 8, 1, 6, 0), datetime.datetime(2017, 9, 1, 8))$/;"	kind:variable	line:25
+ARGS	../main.py	/^ARGS = (datetime.datetime(2017, 8, 1, 6), datetime.datetime(2017, 9, 1, 8))$/;"	kind:variable	line:25
 DB	../settings.py	/^DB = dict(database='d:\\\\tme_db.fdb',$/;"	kind:variable	line:1
-SELECT	../main.py	/^SELECT = get_query('drivers.sql')$/;"	kind:variable	line:15
-SELECT	../main.py	/^SELECT = get_query()$/;"	kind:variable	line:24
-_	../main.py	/^    term_acc, crew_id, _ = r$/;"	kind:variable	line:20
-c	../main.py	/^c = db.cursor()$/;"	kind:variable	line:16
+SELECT	../main.py	/^SELECT = get_query('select_orders.sql')$/;"	kind:variable	line:24
+_border	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+_cli_cancel	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+_done	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+_driver_cancel	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+_dsumm	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+_total	../main.py	/^        _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm = 0, 0, 0, 0, 0, 0$/;"	kind:variable	line:78
+border	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
 c	../main.py	/^c = db.cursor()$/;"	kind:variable	line:31
-crew_id	../main.py	/^    crew_id = int(crew_id)$/;"	kind:variable	line:40
-crew_id	../main.py	/^    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r$/;"	kind:variable	line:39
-crew_id	../main.py	/^    term_acc, crew_id, _ = r$/;"	kind:variable	line:20
+cli_cancel	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
+crewid	../main.py	/^        crewid = int(crewid)$/;"	kind:variable	line:42
 data	../main.py	/^data = {}$/;"	kind:variable	line:34
 date_inf	../main.py	/^date_inf = datetime.datetime(9999, 12, 31, 23, 59, 59)$/;"	kind:variable	line:36
 date_zero	../main.py	/^date_zero = datetime.datetime(1, 1, 1, 0, 0, 0)$/;"	kind:variable	line:35
 db	../main.py	/^db = fdb.connect(**settings.DB)$/;"	kind:variable	line:13
-disc_summ	../main.py	/^    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r$/;"	kind:variable	line:39
-disc_summ	../main.py	/^    disc_summ = float(disc_summ) if disc_summ else float_0$/;"	kind:variable	line:42
+done	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
+driver_cancel	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
 drivers	../main.py	/^drivers = {}$/;"	kind:variable	line:18
+dsumm	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
+dsumm	../main.py	/^        dsumm = float(dsumm) if dsumm else float_0$/;"	kind:variable	line:44
 float_0	../main.py	/^float_0 = float(0)$/;"	kind:variable	line:33
 get_query	../main.py	/^def get_query(query='query_1.sql', path='sql'):$/;"	kind:function	line:8
-hours	../main.py	/^            hours = data[drivers[d]][2].days*24 + data[drivers[d]][2].seconds \/\/ 3600$/;"	kind:variable	line:60
-line_	../main.py	/^            line_ = line_.replace('.', ',')$/;"	kind:variable	line:67
-line_	../main.py	/^        line_ = d$/;"	kind:variable	line:58
 main.py	../main.py	1;"	kind:file	line:1
-minutes	../main.py	/^            minutes = (data[drivers[d]][2].seconds % 3600) \/\/ 60$/;"	kind:variable	line:61
-seconds	../main.py	/^            seconds = data[drivers[d]][2].seconds % 60$/;"	kind:variable	line:62
 settings.py	../settings.py	1;"	kind:file	line:1
-shift_id	../main.py	/^    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r$/;"	kind:variable	line:39
-shift_id	../main.py	/^    shift_id = int(shift_id)$/;"	kind:variable	line:41
-shift_time_begin	../main.py	/^    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r$/;"	kind:variable	line:39
-shift_time_end	../main.py	/^    crew_id, shift_id, shift_time_begin, shift_time_end, disc_summ = r$/;"	kind:variable	line:39
-term_acc	../main.py	/^    term_acc, crew_id, _ = r$/;"	kind:variable	line:20
+statetime	../main.py	/^        statetime = (statetime-datetime.timedelta(days=1)).date() if statetime.time().hour < 7 e/;"	kind:variable	line:41
+total	../main.py	/^            total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]$/;"	kind:variable	line:80
