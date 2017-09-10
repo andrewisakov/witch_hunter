@@ -100,25 +100,38 @@ for dr in sorted(drivers):  # Позывной
 """
 
 with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as rpt:
-    rpt.writelines([';'+';;;;;;;;'.join(['%s' % (ARGS[0]+datetime.timedelta(days=d)).date() for d in range((ARGS[1]-ARGS[0]).days)])+'\n'])
-    rpt.writelines(['Позывной;'+'Время;Предложено;Отказ;Выполнено;Отказ клиента;Бордюр;Сумма;Ср.стоимость;'*(ARGS[1]-ARGS[0]).days +'\n'])
+    rpt.writelines([';;;;;;;;;'+';;;;;;;;'.join(['%s' % (ARGS[0]+datetime.timedelta(days=d)).date() for d in range((ARGS[1]-ARGS[0]).days)])+'\n'])
+    rpt.writelines(['Позывной;'+'Время;Предложено;Отказ;Выполнено;Отказ клиента;Бордюр;Сумма;Ср.стоимость;'*((ARGS[1]-ARGS[0]).days+1) +'\n'])
     for dr in sorted(drivers):
         line_ = dr
         if drivers[dr] in data.keys():
+            totals = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
+            for d in data[drivers[dr]]:
+                for r in range(len(totals)):
+                    totals[r] += data[drivers[dr]][d][r]
+            hours = totals[0].days*24 + data[drivers[dr]][d][0].seconds // 3600
+            minutes = (totals[0].seconds % 3600) // 60
+            seconds = totals[0].seconds % 60
+            totals[0] = '%d:%02d:%02d' % (hours, minutes, seconds)
+            totals.append('%.2f' % (totals[6]/totals[3] if totals[3] > 0 else 0))
+            totals[6] = '%.2f' % totals[6]
+            totals = ['%s' % t for t in totals]
+            line_ += ';' + ';'.join(totals)
             last_date = ARGS[0].date()
             for d in data[drivers[dr]]:
                 if (d - last_date).days > 1:
-                    line_ += (';'*(ARGS[1]-ARGS[0]).days)*((d - last_date).days-1)
+                    line_ += (';'*((d - last_date).days-1)*8)
                     last_date = d
 
                 # print(data[drivers[dr]][d])
                 hours = data[drivers[dr]][d][0].days*24 + data[drivers[dr]][d][0].seconds // 3600
                 minutes = (data[drivers[dr]][d][0].seconds % 3600) // 60
                 seconds = data[drivers[dr]][d][0].seconds % 60
-                data[drivers[dr]][d][0] = '%s:%02d:%02d' % (hours, minutes, seconds)
+                data[drivers[dr]][d][0] = '%d:%02d:%02d' % (hours, minutes, seconds)
                 data[drivers[dr]][d].append('%.2f' % (data[drivers[dr]][d][6]/data[drivers[dr]][d][3] if data[drivers[dr]][d][3] > 0 else 0))
+                data[drivers[dr]][d][6] = '%.2f' % data[drivers[dr]][d][6]
                 data[drivers[dr]][d] = ['%s' % dr for dr in data[drivers[dr]][d]]
-                line_ += (';'+';'.join(data[drivers[dr]][d]))
+                line_ += ';'+';'.join(data[drivers[dr]][d])
                 line_ = line_.replace('.', ',')
 
         line_ += '\n'
