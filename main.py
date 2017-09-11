@@ -75,10 +75,8 @@ for crewid, begin_time, end_time, term_acc in c.fetchall():
             if d not in data[crewid]:
                 data[crewid][d] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
             data[crewid][d][0] += durations[d]
-        if drivers['01024'] == crewid:
-            print(data[crewid])
-        # if driverid == 7663:
-        #     print(data[driverid])
+        # if drivers['01024'] == crewid:
+        #     print(data[crewid])
 c.close()
 db.close()
 
