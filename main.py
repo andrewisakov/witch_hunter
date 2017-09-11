@@ -17,6 +17,7 @@ c = db.cursor()
 c.execute(SELECT)
 drivers = {term_acc: crew_id for term_acc, crew_id, _ in c.fetchall()}
 c.close()
+# input(drivers['01024'])
 
 SELECT = get_query('select_orders.sql')
 ARGS = settings.DATES
@@ -33,20 +34,23 @@ for account, statetime, tostate, _, crewid, orderid, dsumm, ord_crewid, drvid, b
         crewid = int(crewid)
         ord_crewid = int(ord_crewid) if ord_crewid else 0
         dsumm = float(dsumm) if dsumm else float_0
-        if drvid not in data.keys():
-            data[drvid] = {}
-        if statetime not in data[drvid]:
-            data[drvid][statetime] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]  # время на линии, Всего, отказ, выполнено, отказ клиента, из них бордюр, сумма
-        data[drvid][statetime][1] += 1
+        if crewid not in data.keys():
+            data[crewid] = {}
+        if statetime not in data[crewid]:
+            data[crewid][statetime] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
+            # время на линии, Всего, отказ, выполнено, отказ клиента, из них бордюр, сумма
+        data[crewid][statetime][1] += 1
         if (tostate == 4) and (crewid == ord_crewid):  # Выполнен
-            data[drvid][statetime][3] += 1
+            data[crewid][statetime][3] += 1
             if border == 1:
-                data[drvid][statetime][5] += 1
-            data[drvid][statetime][6] += dsumm
+                data[crewid][statetime][5] += 1
+            data[crewid][statetime][6] += dsumm
         if tostate == 9:  # Отказ
-            data[drvid][statetime][2] += 1
+            data[crewid][statetime][2] += 1
         if tostate == 12:  # Отказ клиента
-            data[drvid][statetime][4] += 1
+            data[crewid][statetime][4] += 1
+        # if account == '01024':
+        #     print(data[drvid])
 c.close()
 c = db.cursor()
 SELECT = get_query('select_driver_smens.sql')
@@ -54,12 +58,12 @@ ARGS *= 2
 c.execute(SELECT, ARGS)
 # print(SELECT, ARGS)
 for r in c.fetchall():
-    driverid, begin_time, end_time = r
-    if driverid:
+    crewid, begin_time, end_time = r
+    if crewid:
         # print(driverid, begin_time, end_time)
-        driverid = int(driverid)
-        if driverid not in data.keys():
-            data[driverid] = {}
+        crewid = int(crewid)
+        if crewid not in data.keys():
+            data[crewid] = {}
         if begin_time.time() < datetime.time(7) <= end_time.time():
             dates = ((begin_time - datetime.timedelta(days=1)).date(), end_time.date(),)
             durations = {dates[0]: end_time-datetime.datetime(dates[1].year, dates[1].month, dates[1].day, hour=7),
@@ -70,9 +74,11 @@ for r in c.fetchall():
         for d in durations:
             date_zero = d if date_zero < d else date_zero
             date_inf = d if date_inf > d else date_inf
-            if d not in data[driverid]:
-                data[driverid][d] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
-            data[driverid][d][0] += durations[d]
+            if d not in data[crewid]:
+                data[crewid][d] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
+            data[crewid][d][0] += durations[d]
+        # if driverid == 7663:
+        #     print(data[driverid])
 c.close()
 db.close()
 
@@ -81,13 +87,13 @@ db.close()
 
 # print(date_zero, date_inf)
 
-"""
+
 for dr in sorted(drivers):  # Позывной
     if drivers[dr] in data.keys():
-        print(dr)
+        # print(dr)
         _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm, _duration = 0, 0, 0, 0, 0, 0, datetime.timedelta(0)
         for d in sorted(data[drivers[dr]]):  # Дата
-            total, driver_cancel, done, cli_cancel, border, dsumm, duration = data[drivers[dr]][d]
+            duration, total, driver_cancel, done, cli_cancel, border, dsumm = data[drivers[dr]][d]
             _total += total
             _driver_cancel += driver_cancel
             _done += done
@@ -95,9 +101,9 @@ for dr in sorted(drivers):  # Позывной
             _border += border
             _dsumm += dsumm
             _duration += duration
-            print('\t', d, total, driver_cancel, done, cli_cancel, border, dsumm, duration)
-        print('\t', len(data[drivers[dr]]), _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm, _duration)
-"""
+        #     print('\t', d, total, driver_cancel, done, cli_cancel, border, dsumm, duration)
+        # print('\t', len(data[drivers[dr]]), _total, _driver_cancel, _done, _cli_cancel, _border, _dsumm, _duration)
+
 
 with open('witch_hunter-%s-%s.csv' % (ARGS[0].date(), ARGS[1].date()), 'w') as rpt:
     rpt.writelines([';;;;;;;;;'+';;;;;;;;'.join(['%s' % (ARGS[0]+datetime.timedelta(days=d)).date() for d in range((ARGS[1]-ARGS[0]).days)])+'\n'])
