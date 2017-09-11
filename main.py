@@ -57,10 +57,8 @@ SELECT = get_query('select_driver_smens.sql')
 ARGS *= 2
 c.execute(SELECT, ARGS)
 # print(SELECT, ARGS)
-for r in c.fetchall():
-    crewid, begin_time, end_time = r
+for crewid, begin_time, end_time, term_acc in c.fetchall():
     if crewid:
-        # print(driverid, begin_time, end_time)
         crewid = int(crewid)
         if crewid not in data.keys():
             data[crewid] = {}
@@ -69,7 +67,7 @@ for r in c.fetchall():
             durations = {dates[0]: end_time-datetime.datetime(dates[1].year, dates[1].month, dates[1].day, hour=7),
                          dates[1]: datetime.datetime(dates[1].year, dates[1].month, dates[1].day, 7)-begin_time,}
         else:
-            dates = (end_time.date(),)
+            dates = (begin_time.date(),)
             durations = {dates[0]: end_time - begin_time,}
         for d in durations:
             date_zero = d if date_zero < d else date_zero
@@ -77,6 +75,8 @@ for r in c.fetchall():
             if d not in data[crewid]:
                 data[crewid][d] = [datetime.timedelta(0), 0, 0, 0, 0, 0, 0.0]
             data[crewid][d][0] += durations[d]
+        if drivers['01024'] == crewid:
+            print(data[crewid])
         # if driverid == 7663:
         #     print(data[driverid])
 c.close()

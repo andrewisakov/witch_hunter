@@ -6,4 +6,4 @@ DB = dict(database='d:\\tme_db.fdb',
           password='admin',
           charset='win1251')
 
-DATES = (datetime.datetime(2017, 9, 1, 6), datetime.datetime(2017, 10, 1, 8))
+DATES = (datetime.datetime(2017, 7, 1, 6), datetime.datetime(2017, 8, 1, 8))
